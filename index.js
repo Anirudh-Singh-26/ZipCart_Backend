@@ -32,6 +32,10 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
+app.get("/ping", (req, res) => {
+  res.json({ message: "pong" });
+});
+
 // static files
 app.use("/images", express.static("uploads"));
 
@@ -42,6 +46,7 @@ app.use("/api/product", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/order", orderRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
