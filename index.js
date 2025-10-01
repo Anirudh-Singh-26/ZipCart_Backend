@@ -19,7 +19,9 @@ const app = express();
 await connectCloudinary();
 
 // allowed origin from .env
-const allowedOrigin = process.env.FROTNEND || "http://localhost:5173";
+// const allowedOrigin = process.env.FROTNEND || "http://localhost:5173";
+const allowedOrigin = "http://localhost:5173";
+
 
 // middlewares
 app.use(
