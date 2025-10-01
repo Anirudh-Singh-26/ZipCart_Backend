@@ -19,7 +19,6 @@ const app = express();
 await connectCloudinary();
 
 // allowed origin from .env
-import cors from "cors";
 
 const allowedOrigins = [
   process.env.FRONTEND, // optional: from .env
