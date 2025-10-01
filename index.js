@@ -19,8 +19,28 @@ const app = express();
 await connectCloudinary();
 
 // allowed origin from .env
-// const allowedOrigin = process.env.FROTNEND || "http://localhost:5173";
-const allowedOrigin = "http://localhost:5173";
+import cors from "cors";
+
+const allowedOrigins = [
+  process.env.FRONTEND, // optional: from .env
+  "https://zip-cart-frontend-git-main-anirudh-singh-rathores-projects.vercel.app",
+  "https://zip-cart-frontend-24tip94zu-anirudh-singh-rathores-projects.vercel.app",
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      // allow requests with no origin (like mobile apps, curl) or from allowedOrigins
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // allow cookies
+};
+
+export default cors(corsOptions);
+// const allowedOrigin = "http://localhost:5173";
 
 
 // middlewares
