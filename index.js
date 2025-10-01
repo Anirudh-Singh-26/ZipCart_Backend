@@ -18,49 +18,40 @@ const app = express();
 // Connect services
 await connectCloudinary();
 
-// allowed origin from .env
-
+// Allowed origins
 const allowedOrigins = [
-  process.env.FRONTEND, // optional: from .env
-  "https://zip-cart-frontend-git-main-anirudh-singh-rathores-projects.vercel.app",
-  "https://zip-cart-frontend-24tip94zu-anirudh-singh-rathores-projects.vercel.app",
+  "http://localhost:5173", // dev
+  "https://zip-cart-frontend.vercel.app", // main Vercel
+  "https://zip-cart-frontend-git-main-anirudh-singh-rathores-projects.vercel.app", // preview
+  "https://zip-cart-frontend-24tip94zu-anirudh-singh-rathores-projects.vercel.app", // preview
 ];
 
+// CORS options
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
-      // allow requests with no origin (like mobile apps, curl) or from allowedOrigins
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error(`CORS not allowed for origin ${origin}`));
     }
   },
   credentials: true, // allow cookies
 };
 
-export default cors(corsOptions);
-// const allowedOrigin = "http://localhost:5173";
-
-
-// middlewares
-app.use(
-  cors({
-    origin: allowedOrigin,
-    credentials: true,
-  })
-);
-
+// Middlewares
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
+// Test route
 app.get("/ping", (req, res) => {
   res.json({ message: "pong" });
 });
 
-// static files
+// Static files
 app.use("/images", express.static("uploads"));
 
-// Api endpoints
+// API routes
 app.use("/api/user", userRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api/product", productRoutes);
@@ -68,7 +59,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/order", orderRoutes);
 
-
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   connectDB();
