@@ -38,13 +38,23 @@ const corsOptions = {
   credentials: true, // allow cookies
 };
 
-// Middlewares
+// --- Middlewares ---
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
-// Test route
+// --- Global Request Logger ---
+app.use((req, res, next) => {
+  const now = new Date().toISOString();
+  console.log(`[${now}] ${req.method} ${req.originalUrl} from ${req.ip}`);
+  next();
+});
+
+// --- Test route (backend wake-up) ---
 app.get("/ping", (req, res) => {
+  console.log(
+    `[PING] /ping requested at ${new Date().toISOString()} from ${req.ip}`
+  );
   res.json({ message: "pong" });
 });
 
